@@ -5,7 +5,7 @@ import { eq, desc, isNull } from "drizzle-orm";
 import { Topic, topics } from "@/db/schema";
 import { verifySession } from "@/lib/dal";
 import { slugify } from "../helpers/slugify";
-import { updateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 
 /**
  * TOPICS CRUD
@@ -61,7 +61,7 @@ export const createTopic = async (data: {
         slug: uniqueSlug,
       })
       .returning();
-    if (!inserted[0].parentId) updateTag(`topics-list`);
+    if (!inserted[0].parentId) revalidateTag(`topics-list`, "max");
     return { success: true, topic: inserted[0] };
   } catch (err) {
     return { success: false, message: "Failed to create topic" };
@@ -85,7 +85,7 @@ export const updateTopic = async (id: number, data: Partial<Topic>) => {
       .set(payload)
       .where(eq(topics.id, id))
       .returning();
-    if (!updated[0].parentId) updateTag(`topics-list`);
+    if (!updated[0].parentId) revalidateTag(`topics-list`, "max");
     updateTag(`topic-${id}-page`);
     return { success: true, topic: updated[0] ?? null };
   } catch (err) {
@@ -100,7 +100,7 @@ export const deleteTopic = async (id: number) => {
       .delete(topics)
       .where(eq(topics.id, id))
       .returning();
-    if (!deleted[0].parentId) updateTag(`topics-list`);
+    if (!deleted[0].parentId) revalidateTag(`topics-list`, "max");
     updateTag(`topic-${id}-page`);
     return { success: true, topic: deleted[0] ?? null };
   } catch (err) {
