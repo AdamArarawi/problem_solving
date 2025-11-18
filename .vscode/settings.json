@@ -1,0 +1,15 @@
+{
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "prettier.endOfLine": "auto",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.colorTheme": "One Dark Pro Night Flat",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+  "editor.fontLigatures": true
+}
