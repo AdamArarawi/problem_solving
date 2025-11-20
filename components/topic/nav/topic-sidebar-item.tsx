@@ -54,7 +54,7 @@ export default function TopicSidebarItem({
   return (
     <Collapsible open={isOpen} onOpenChange={setManualOpen}>
       <SidebarMenuItem>
-        <SidebarMenuButton asChild>
+        <SidebarMenuButton asChild tooltip={topic.title}>
           <Link
             href={`/topic/${topic.id}`}
             onClick={() => setOpenMobile(false)}

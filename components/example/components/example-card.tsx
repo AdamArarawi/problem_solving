@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Edit } from "lucide-react";
 import UpdateExampleButton from "../forms/update-example";
 import DeleteExampleButton from "../forms/delete-example";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ExampleCode from "./example-code";
 
 interface ExampleCardProps {
   id: number;
@@ -28,14 +27,7 @@ export default function ExampleCard({
 
         {code && (
           <div className="overflow-auto rounded-md border border-border">
-            <SyntaxHighlighter
-              language="ts"
-              style={oneDark}
-              wrapLongLines
-              customStyle={{ margin: 0, padding: "1rem", fontSize: "0.875rem" }}
-            >
-              {code}
-            </SyntaxHighlighter>
+            <ExampleCode code={code} />
           </div>
         )}
 

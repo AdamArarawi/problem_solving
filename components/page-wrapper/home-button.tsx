@@ -10,7 +10,7 @@ const HomeButton = () => {
   const { setOpenMobile } = useSidebar(); // هذا يغلق sidebar على الموبايل
 
   return (
-    <SidebarMenuButton tooltip="Quick Create" asChild>
+    <SidebarMenuButton tooltip="Home" asChild>
       <Button variant="ghost" className="w-full justify-start gap-2" asChild>
         <Link href="/topic" onClick={() => setOpenMobile(false)}>
           <Home />
