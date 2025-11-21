@@ -28,7 +28,7 @@ export default function ExampleCard({
         <h3 className="font-medium text-primary">{title}</h3>
 
         {code && (
-          <div className="overflow-auto rounded-md border border-border">
+          <div className="overflow-auto">
             <CodeBlock code={code} lang={language} />
           </div>
         )}
