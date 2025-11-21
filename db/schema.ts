@@ -7,7 +7,10 @@ import {
   serial,
   integer,
   foreignKey,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
+const codeLang = pgEnum("code_language", ["py", "cpp", "ts", "js"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -141,6 +144,7 @@ export const examples = pgTable("examples", {
 
   title: text("title").notNull(),
   code: text("code"),
+  language: codeLang("language").notNull().default("py"),
   output: text("output"),
   explanation: text("explanation"),
 
@@ -209,6 +213,7 @@ export const resources = pgTable("resources", {
 export type Resource = typeof resources.$inferSelect;
 
 const schema = {
+  codeLang,
   user,
   session,
   account,

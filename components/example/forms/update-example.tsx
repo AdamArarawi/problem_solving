@@ -27,8 +27,17 @@ import { updateExample } from "@/server/examples/write";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
+  language: z.string().optional(),
   code: z.string().optional(),
   output: z.string().optional(),
   explanation: z.string().optional(),
@@ -39,6 +48,7 @@ export default function UpdateExampleButton({
   title,
   code,
   output,
+  language,
   explanation,
   open,
   setOpen,
@@ -49,6 +59,7 @@ export default function UpdateExampleButton({
   code?: string;
   output?: string;
   explanation?: string;
+  language?: string;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   children?: React.ReactNode;
@@ -65,6 +76,7 @@ export default function UpdateExampleButton({
       code: code || "",
       output: output || "",
       explanation: explanation || "",
+      language: language || "py",
     },
   });
 
@@ -74,8 +86,9 @@ export default function UpdateExampleButton({
       code: code || "",
       output: output || "",
       explanation: explanation || "",
+      language: language || "py",
     });
-  }, [title, code, output, explanation, form]);
+  }, [title, code, output, explanation, language, form]);
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
     try {
@@ -99,7 +112,7 @@ export default function UpdateExampleButton({
           <DialogDescription>Edit this example.</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <FieldGroup className="max-h-[400px] overflow-auto pr-4">
             <Controller
               name="title"
               control={form.control}
@@ -110,6 +123,30 @@ export default function UpdateExampleButton({
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="language"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>Language</FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="py">Python</SelectItem>
+                      <SelectItem value="js">JavaScript</SelectItem>
+                      <SelectItem value="ts">TypeScript</SelectItem>
+                      <SelectItem value="cpp">C++</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </Field>
               )}
             />

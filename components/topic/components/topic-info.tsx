@@ -1,8 +1,5 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
 import { Topic } from "@/db/schema";
+import MarkdownRenderer from "./topic-content";
 
 export default async function TopicInfo({
   topic,
@@ -12,7 +9,12 @@ export default async function TopicInfo({
   success: boolean;
 }) {
   if (!success || !topic) {
-    return <div className="p-6">Topic not found</div>;
+    return <div className="p-6">Topic not found!</div>;
+  }
+
+  let markdownContent = "";
+  if (topic.content) {
+    markdownContent = await fetch(topic.content).then((res) => res.text());
   }
 
   return (
@@ -27,28 +29,14 @@ export default async function TopicInfo({
         )}
 
         {/* Markdown Content */}
-        {topic.content && (
+        {markdownContent && (
           <article
             className="
-              prose 
-              prose-gray 
-              dark:prose-invert 
-              prose-headings:scroll-mt-20 
-              prose-h2:text-2xl 
-              prose-h3:text-xl
-              prose-pre:bg-muted
-              prose-pre:text-sm
-              prose-code:text-primary
               mt-8
               whitespace-pre-wrap
             "
           >
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw, rehypeSanitize]}
-            >
-              {topic.content}
-            </ReactMarkdown>
+            <MarkdownRenderer>{markdownContent}</MarkdownRenderer>
           </article>
         )}
       </div>

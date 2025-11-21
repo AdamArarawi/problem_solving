@@ -25,10 +25,18 @@ import {
 import { createExample } from "@/server/examples/write";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
   code: z.string().optional(),
+  language: z.string().optional(),
   output: z.string().optional(),
   explanation: z.string().optional(),
 });
@@ -45,7 +53,13 @@ export default function CreateExampleButton({
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    defaultValues: { title: "", code: "", output: "", explanation: "" },
+    defaultValues: {
+      title: "",
+      code: "",
+      language: "py",
+      output: "",
+      explanation: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -73,7 +87,7 @@ export default function CreateExampleButton({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <FieldGroup className="max-h-[400px] overflow-auto pr-4">
             <Controller
               name="title"
               control={form.control}
@@ -84,6 +98,30 @@ export default function CreateExampleButton({
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="language"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>Language</FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="py">Python</SelectItem>
+                      <SelectItem value="js">JavaScript</SelectItem>
+                      <SelectItem value="ts">TypeScript</SelectItem>
+                      <SelectItem value="cpp">C++</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </Field>
               )}
             />

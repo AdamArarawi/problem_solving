@@ -10,7 +10,7 @@ export default async function Page() {
   const topics = await getTopicsByParent(null);
   return (
     <PageWrapper>
-      <div className="container">
+      <div className="container h-full">
         <TopicsList success={topics.success} topics={topics.topics} />
       </div>
     </PageWrapper>

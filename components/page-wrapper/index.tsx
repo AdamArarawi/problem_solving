@@ -12,7 +12,7 @@ export function PageWrapper({ children, selectedTopicId }: PageWrapperProps) {
   return (
     <>
       {/* Main content */}
-      <SidebarInset>
+      <SidebarInset className="min-h-full">
         {/* Header */}
         <header className="flex h-14 shrink-0 items-center gap-2">
           <div className="flex flex-1 items-center gap-2 px-3">

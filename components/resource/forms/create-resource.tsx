@@ -29,7 +29,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
-  url: z.string().url("Invalid URL"),
+  url: z.url("Invalid URL"),
   type: z.string().optional(),
 });
 

@@ -19,6 +19,7 @@ export default async function ExamplesList({ examples }: ExamplesListProps) {
           title={ex.title}
           code={ex.code || undefined}
           output={ex.output || undefined}
+          language={ex.language}
           explanation={ex.explanation || undefined}
         />
       ))}

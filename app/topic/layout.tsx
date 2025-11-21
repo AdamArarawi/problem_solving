@@ -19,7 +19,9 @@ export default async function DashboardLayout({
       >
         <TopicsSidebar />
       </Suspense>
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 max-w-full overflow-hidden min-h-screen">
+        {children}
+      </main>
     </SidebarProvider>
   );
 }

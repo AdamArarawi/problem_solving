@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Edit } from "lucide-react";
 import UpdateExampleButton from "../forms/update-example";
 import DeleteExampleButton from "../forms/delete-example";
-import ExampleCode from "./example-code";
+import { CodeBlock } from "../../code/code-block";
 
 interface ExampleCardProps {
   id: number;
@@ -11,6 +11,7 @@ interface ExampleCardProps {
   code?: string;
   output?: string;
   explanation?: string;
+  language?: string;
 }
 
 export default function ExampleCard({
@@ -19,6 +20,7 @@ export default function ExampleCard({
   code,
   output,
   explanation,
+  language,
 }: ExampleCardProps) {
   return (
     <Card className="flex flex-col justify-between hover:shadow-lg transition-shadow">
@@ -27,7 +29,7 @@ export default function ExampleCard({
 
         {code && (
           <div className="overflow-auto rounded-md border border-border">
-            <ExampleCode code={code} />
+            <CodeBlock code={code} lang={language} />
           </div>
         )}
 
@@ -49,6 +51,7 @@ export default function ExampleCard({
           code={code}
           output={output}
           explanation={explanation}
+          language={language}
         >
           <Button variant="outline" size="icon">
             <Edit className="w-4 h-4" />

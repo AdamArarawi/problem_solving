@@ -35,7 +35,7 @@ import {
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
-  url: z.string().url("Invalid URL"),
+  url: z.url("Invalid URL"),
   source: z.string().optional(),
   difficulty: z.string().optional(),
 });
