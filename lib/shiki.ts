@@ -2,6 +2,7 @@
 import { codeToHtml } from "shiki";
 
 export async function highlightCode(code: string, language: string = "tsx") {
+  "use cache";
   const html = await codeToHtml(code, {
     lang: language,
     themes: {

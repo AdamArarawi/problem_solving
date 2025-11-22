@@ -7,12 +7,10 @@ import ResourceSection from "@/components/resource";
 import { getFullTopic } from "@/server/topics/read";
 
 interface PageContentProps {
-  params: Promise<{ id: string }>;
+  topicId: number;
 }
 
-export default async function TopicPage({ params }: PageContentProps) {
-  const { id } = await params;
-  const topicId = Number(id);
+export default async function TopicPage({ topicId }: PageContentProps) {
   const fullTopic = await getFullTopic(topicId);
   if (!fullTopic || !fullTopic.topic.topic)
     return (

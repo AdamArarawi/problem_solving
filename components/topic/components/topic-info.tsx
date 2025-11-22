@@ -14,7 +14,11 @@ export default async function TopicInfo({
 
   let markdownContent = "";
   if (topic.content) {
-    markdownContent = await fetch(topic.content).then((res) => res.text());
+    markdownContent = await fetch(topic.content, {
+      next: {
+        revalidate: 60,
+      },
+    }).then((res) => res.text());
   }
 
   return (
