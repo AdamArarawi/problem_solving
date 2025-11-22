@@ -48,12 +48,25 @@ export default function TopicSidebarItem({
 
   const isParentOfSelected = containsSelected(topic, selectedId);
 
-  const [manualOpen, setManualOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => {
+    return isParentOfSelected;
+  });
 
-  const isOpen = isParentOfSelected || manualOpen;
+  // إذا تغيرت الصفحة وصار العنصر Parent → افتحه ولا تغلقه
+  if (isParentOfSelected && !isOpen) {
+    setIsOpen(true);
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setIsOpen(true); // فتح يدوي
+    } else {
+      setIsOpen(false); // إغلاق يدوي فقط
+    }
+  };
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setManualOpen}>
+    <Collapsible open={isOpen} onOpenChange={handleOpenChange}>
       <SidebarMenuItem>
         <SidebarMenuButton asChild tooltip={topic.title}>
           <Link

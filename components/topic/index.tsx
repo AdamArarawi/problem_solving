@@ -27,7 +27,9 @@ const TopicsSection = async ({ topics, topicId, success }: TopicProps) => {
           </CreateTopicButton>
         </div>
         <div className="border rounded-lg p-4">
-          <TopicsList topics={topics} success={success} />
+          {(topics?.length === 0 && (
+            <div className="text-muted-foreground">No sub topics found</div>
+          )) || <TopicsList topics={topics} success={success} />}
         </div>
       </section>
     </>

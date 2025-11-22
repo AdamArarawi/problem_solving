@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import Link from "next/link";
 
-export default function Page() {
+export default function PageWrapperSkeleton() {
   return (
     <SidebarInset className="min-h-full">
       <header className="flex h-14 shrink-0 items-center gap-2">

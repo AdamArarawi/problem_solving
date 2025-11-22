@@ -8,7 +8,8 @@ import { cacheLife, cacheTag } from "next/cache";
 export const getFullTopic = async (id: number) => {
   "use cache";
   cacheLife("max");
-  cacheTag(`topic-${id}-page`);
+  cacheTag(`topic-page`);
+  console.log(id);
   try {
     const [topic] = await db.select().from(topics).where(eq(topics.id, id));
     if (!topic) return null;
@@ -26,17 +27,11 @@ export const getFullTopic = async (id: number) => {
           .orderBy(asc(topics.order)),
       ]);
 
-    let markdownContent = "";
-    if (topic.content) {
-      markdownContent = await fetch(topic.content).then((res) => res.text());
-    }
-
     return {
       topic: {
         topic,
         children: childrenList,
         success: true,
-        markdownContent,
       },
       examples: {
         examples: examplesList,

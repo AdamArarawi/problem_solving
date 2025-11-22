@@ -93,7 +93,7 @@ export const updateTopic = async (id: number, data: Partial<Topic>) => {
     )
       revalidateTag(`topics-list`, "max");
     updateTag(`topics-tree`);
-    updateTag(`topic-${id}-page`);
+    updateTag(`topic-page`);
     return { success: true, topic: updated[0] ?? null };
   } catch (err) {
     return { success: false, message: "Failed to update topic" };
@@ -109,7 +109,7 @@ export const deleteTopic = async (id: number) => {
       .returning();
     if (!deleted[0].parentId) revalidateTag(`topics-list`, "max");
     updateTag(`topics-tree`);
-    updateTag(`topic-${id}-page`);
+    updateTag(`topic-page`);
     return { success: true, topic: deleted[0] ?? null };
   } catch (err) {
     return { success: false, message: "Failed to delete topic" };

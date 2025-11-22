@@ -3,6 +3,14 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code/code-block";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function TopicContent({ children }: { children: string }) {
   return (
@@ -45,7 +53,7 @@ export default function TopicContent({ children }: { children: string }) {
 
           // Paragraphs
           p: ({ children, ...props }) => (
-            <p className=" leading-relaxed" {...props}>
+            <p className=" leading-relaxed mt-4" {...props}>
               {children}
             </p>
           ),
@@ -59,12 +67,12 @@ export default function TopicContent({ children }: { children: string }) {
 
           // Lists
           ul: ({ children, ...props }) => (
-            <ul className="list-disc pl-6 " {...props}>
+            <ul className="list-disc pl-6 mt-4" {...props}>
               {children}
             </ul>
           ),
           ol: ({ children, ...props }) => (
-            <ol className="list-decimal pl-6 " {...props}>
+            <ol className="list-decimal pl-6 mt-4" {...props}>
               {children}
             </ol>
           ),
@@ -87,7 +95,7 @@ export default function TopicContent({ children }: { children: string }) {
             const match = /language-(\w+)/.exec(className || "");
             const codeString = String(codeChildren).replace(/\n$/, "");
             return match ? (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto mt-4">
                 <CodeBlock code={codeString} lang={match[1]} />
               </div>
             ) : (
@@ -102,30 +110,26 @@ export default function TopicContent({ children }: { children: string }) {
 
           // Tables
           table: ({ children, ...props }) => (
-            <div className="overflow-x-auto ">
-              <table
-                className="table-auto border-collapse border border-gray-300 dark:border-gray-600 w-full"
-                {...props}
-              >
-                {children}
-              </table>
+            <div className="my-4 w-full overflow-auto rounded-md border">
+              <Table {...props}>{children}</Table>
             </div>
           ),
-          th: ({ children, ...props }) => (
-            <th
-              className="border border-gray-300 dark:border-gray-600 px-2 py-1 bg-gray-100 dark:bg-gray-700 font-semibold text-left"
-              {...props}
-            >
+          thead: ({ children, ...props }) => (
+            <TableHeader {...props} className="bg-secondary hover:bg-secondary">
               {children}
-            </th>
+            </TableHeader>
+          ),
+          tbody: ({ children, ...props }) => (
+            <TableBody {...props}>{children}</TableBody>
+          ),
+          tr: ({ children, ...props }) => (
+            <TableRow {...props}>{children}</TableRow>
+          ),
+          th: ({ children, ...props }) => (
+            <TableHead {...props}>{children}</TableHead>
           ),
           td: ({ children, ...props }) => (
-            <td
-              className="border border-gray-300 dark:border-gray-600 px-2 py-1"
-              {...props}
-            >
-              {children}
-            </td>
+            <TableCell {...props}>{children}</TableCell>
           ),
         }}
       >

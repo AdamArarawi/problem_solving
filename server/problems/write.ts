@@ -20,7 +20,7 @@ export const createProblem = async (data: {
   await verifySession();
   try {
     const inserted = await db.insert(problems).values(data).returning();
-    updateTag(`topic-${inserted[0].topicId}-page`);
+    updateTag(`topic-page`);
     return {
       success: true,
       problem: inserted[0],
@@ -50,7 +50,7 @@ export const updateProblem = async (
       .set(data)
       .where(eq(problems.id, id))
       .returning();
-    updateTag(`topic-${updated[0].topicId}-page`);
+    updateTag(`topic-page`);
     return {
       success: true,
       problem: updated[0] ?? null,
@@ -70,7 +70,7 @@ export const deleteProblem = async (id: number) => {
       .delete(problems)
       .where(eq(problems.id, id))
       .returning();
-    updateTag(`topic-${deleted[0].topicId}-page`);
+    updateTag(`topic-page`);
     return {
       success: true,
       problem: deleted[0] ?? null,

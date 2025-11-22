@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  content: z.url("Invalid Markdown URL").optional(),
+  content: z.string().optional(),
 });
 
 const CreateTopicButton = ({
@@ -139,7 +139,14 @@ const CreateTopicButton = ({
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="content">Content</FieldLabel>
-                  <Input {...field} placeholder="https://..." />
+                  <Textarea
+                    {...field}
+                    id="content"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Content"
+                    autoComplete="off"
+                    className="h-32 resize-none"
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

@@ -19,7 +19,7 @@ export const createResource = async (data: {
   await verifySession();
   try {
     const inserted = await db.insert(resources).values(data).returning();
-    updateTag(`topic-${inserted[0].topicId}-page`);
+    updateTag(`topic-page`);
 
     return { success: true, data: inserted[0] };
   } catch {
@@ -38,7 +38,7 @@ export const updateResource = async (
       .set(data)
       .where(eq(resources.id, id))
       .returning();
-    updateTag(`topic-${updated[0]?.topicId}-page`);
+    updateTag(`topic-page`);
     return { success: true, data: updated[0] ?? null };
   } catch {
     return { success: false, error: "Failed to update resource" };
@@ -52,7 +52,7 @@ export const deleteResource = async (id: number) => {
       .delete(resources)
       .where(eq(resources.id, id))
       .returning();
-    updateTag(`topic-${deleted[0]?.topicId}-page`);
+    updateTag(`topic-page`);
     return { success: true, data: deleted[0] ?? null };
   } catch {
     return { success: false, error: "Failed to delete resource" };

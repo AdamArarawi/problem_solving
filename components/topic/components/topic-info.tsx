@@ -27,12 +27,7 @@ export default async function TopicInfo({
 
         {/* Markdown Content */}
         {markdownContent && (
-          <article
-            className="
-              mt-8
-              whitespace-pre-wrap
-            "
-          >
+          <article className="mt-8 ">
             <MarkdownRenderer>{markdownContent}</MarkdownRenderer>
           </article>
         )}

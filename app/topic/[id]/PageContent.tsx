@@ -7,10 +7,11 @@ import ResourceSection from "@/components/resource";
 import { getFullTopic } from "@/server/topics/read";
 
 interface PageContentProps {
-  topicId: number;
+  params: Promise<{ id: string }>;
 }
 
-export default async function TopicPage({ topicId }: PageContentProps) {
+export default async function TopicPage({ params }: PageContentProps) {
+  const topicId = Number((await params).id);
   const fullTopic = await getFullTopic(topicId);
   if (!fullTopic || !fullTopic.topic.topic)
     return (
@@ -31,7 +32,7 @@ export default async function TopicPage({ topicId }: PageContentProps) {
             <TopicInfo
               topic={fullTopic.topic.topic}
               success={fullTopic.topic.success}
-              markdownContent={fullTopic.topic.markdownContent}
+              markdownContent={fullTopic.topic.topic.content || ""}
             />
           </div>
 
