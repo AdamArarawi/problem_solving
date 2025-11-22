@@ -86,12 +86,8 @@ export const updateTopic = async (id: number, data: Partial<Topic>) => {
       .set(payload)
       .where(eq(topics.id, id))
       .returning();
-    if (
-      !updated[0].parentId &&
-      updated[0].title !== payload.title &&
-      updated[0].description !== payload.description
-    )
-      revalidateTag(`topics-list`, "max");
+    if (!updated[0].parentId) updateTag(`topics-list`);
+
     updateTag(`topics-tree`);
     updateTag(`topic-${id}-page`);
     return { success: true, topic: updated[0] ?? null };
