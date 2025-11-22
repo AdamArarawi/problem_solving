@@ -4,21 +4,14 @@ import MarkdownRenderer from "./topic-content";
 export default async function TopicInfo({
   topic,
   success,
+  markdownContent,
 }: {
   topic: Topic;
   success: boolean;
+  markdownContent: string;
 }) {
   if (!success || !topic) {
     return <div className="p-6">Topic not found!</div>;
-  }
-
-  let markdownContent = "";
-  if (topic.content) {
-    markdownContent = await fetch(topic.content, {
-      next: {
-        revalidate: 60,
-      },
-    }).then((res) => res.text());
   }
 
   return (

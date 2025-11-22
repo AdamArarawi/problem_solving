@@ -31,6 +31,7 @@ export default async function TopicPage({ topicId }: PageContentProps) {
             <TopicInfo
               topic={fullTopic.topic.topic}
               success={fullTopic.topic.success}
+              markdownContent={fullTopic.topic.markdownContent}
             />
           </div>
 
