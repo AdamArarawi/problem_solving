@@ -22,6 +22,7 @@ import { usePathname } from "next/navigation";
 import { TopicWithChildren } from "@/server/helpers/types";
 import { useState } from "react";
 
+// دالة للتحقق إذا الموضوع الحالي أو أي طفل منه محدد
 function containsSelected(
   topic: TopicWithChildren,
   selectedId: number

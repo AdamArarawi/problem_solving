@@ -3,8 +3,12 @@
 import { db } from "@/db";
 import { eq, asc } from "drizzle-orm";
 import { topics, examples, problems, resources } from "@/db/schema";
+import { cacheLife, cacheTag } from "next/cache";
 
 export const getFullTopic = async (id: number) => {
+  "use cache";
+  cacheLife("max");
+  cacheTag(`topic-${id}-page`);
   try {
     const [topic] = await db.select().from(topics).where(eq(topics.id, id));
     if (!topic) return null;

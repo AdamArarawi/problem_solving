@@ -4,7 +4,6 @@ import TopicInfo from "@/components/topic/components/topic-info";
 import ExamplesSection from "@/components/example";
 import ProblemsSection from "@/components/problem";
 import ResourceSection from "@/components/resource";
-import { cacheLife, cacheTag } from "next/cache";
 import { getFullTopic } from "@/server/topics/read";
 
 interface PageContentProps {
@@ -12,11 +11,8 @@ interface PageContentProps {
 }
 
 export default async function TopicPage({ params }: PageContentProps) {
-  "use cache";
   const { id } = await params;
   const topicId = Number(id);
-  cacheLife("max");
-  cacheTag(`topic-${topicId}-page`);
   const fullTopic = await getFullTopic(topicId);
   if (!fullTopic || !fullTopic.topic.topic)
     return (

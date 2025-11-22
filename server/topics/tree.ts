@@ -4,12 +4,16 @@ import { db } from "@/db";
 import { asc } from "drizzle-orm";
 import { topics } from "@/db/schema";
 import type { TopicWithChildren } from "../helpers/types";
+import { cacheLife, cacheTag } from "next/cache";
 
 /**
  * READ: Build topics tree (useful for sidebar / )
  * returns array of root topics with nested children arrays
  */
 export const getTopicsTree = async () => {
+  "use cache";
+  cacheLife("max");
+  cacheTag("topics-tree");
   try {
     const all = await db.select().from(topics).orderBy(asc(topics.order));
 
