@@ -20,7 +20,7 @@ export const createExample = async (data: {
   await verifySession();
   try {
     const inserted = await db.insert(examples).values(data).returning();
-    updateTag(`topic-page`);
+    updateTag(`topic-${inserted[0].topicId}-page`);
     return inserted[0];
   } catch {
     throw new Error("Failed to create example");
@@ -44,7 +44,7 @@ export const updateExample = async (
       .set(data)
       .where(eq(examples.id, id))
       .returning();
-    updateTag(`topic-page`);
+    updateTag(`topic-${updated[0].topicId}-page`);
     return updated[0] ?? null;
   } catch {
     throw new Error("Failed to update example");
@@ -58,7 +58,7 @@ export const deleteExample = async (id: number) => {
       .delete(examples)
       .where(eq(examples.id, id))
       .returning();
-    updateTag(`topic-page`);
+    updateTag(`topic-${deleted[0].topicId}-page`);
     return deleted[0] ?? null;
   } catch {
     throw new Error("Failed to delete example");

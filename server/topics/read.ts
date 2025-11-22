@@ -8,7 +8,7 @@ import { cacheLife, cacheTag } from "next/cache";
 export const getFullTopic = async (id: number) => {
   "use cache";
   cacheLife("max");
-  cacheTag(`topic-page`);
+  cacheTag(`topic-${id}-page`);
   console.log(id);
   try {
     const [topic] = await db.select().from(topics).where(eq(topics.id, id));
