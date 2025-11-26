@@ -13,11 +13,11 @@ import { cacheLife, cacheTag } from "next/cache";
  * This is used for navigation components that require the full hierarchy.
  */
 export const getTopicsTree = async () => {
-  "use cache";
-  // هذا التخزين يستخدم للشجرة الكاملة (Sidebar)
-  cacheLife("max");
-  cacheTag("topics-tree");
-  console.log("topics-tree");
+  // "use cache";
+  // // هذا التخزين يستخدم للشجرة الكاملة (Sidebar)
+  // cacheLife("max");
+  // cacheTag("topics-tree");
+  // console.log("topics-tree");
 
   try {
     // 1. جلب جميع المواضيع في قائمة مسطحة
