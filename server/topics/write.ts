@@ -62,7 +62,7 @@ export const createTopic = async (data: {
       })
       .returning();
     if (!inserted[0].parentId) revalidateTag(`topics-list`, "max");
-    updateTag(`topics-tree`);
+    // updateTag(`topics-tree`);
     return { success: true, topic: inserted[0] };
   } catch (err) {
     return { success: false, message: "Failed to create topic" };
@@ -86,13 +86,9 @@ export const updateTopic = async (id: number, data: Partial<Topic>) => {
       .set(payload)
       .where(eq(topics.id, id))
       .returning();
-    if (
-      !updated[0].parentId &&
-      updated[0].title !== payload.title &&
-      updated[0].description !== payload.description
-    )
-      revalidateTag(`topics-list`, "max");
-    updateTag(`topics-tree`);
+    if (!updated[0].parentId) updateTag(`topics-list`);
+
+    // updateTag(`topics-tree`);
     updateTag(`topic-${id}-page`);
     return { success: true, topic: updated[0] ?? null };
   } catch (err) {
@@ -108,7 +104,7 @@ export const deleteTopic = async (id: number) => {
       .where(eq(topics.id, id))
       .returning();
     if (!deleted[0].parentId) revalidateTag(`topics-list`, "max");
-    updateTag(`topics-tree`);
+    // updateTag(`topics-tree`);
     updateTag(`topic-${id}-page`);
     return { success: true, topic: deleted[0] ?? null };
   } catch (err) {

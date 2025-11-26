@@ -1,22 +1,29 @@
 "use server";
 
 import { db } from "@/db";
-import { asc } from "drizzle-orm";
+// تم استيراد isNull لمعالجة شرط WHERE column IS NULL
+import { asc, eq, isNull } from "drizzle-orm";
 import { topics } from "@/db/schema";
 import type { TopicWithChildren } from "../helpers/types";
 import { cacheLife, cacheTag } from "next/cache";
 
 /**
  * READ: Build topics tree (useful for sidebar / )
- * returns array of root topics with nested children arrays
+ * Returns array of root topics with nested children arrays.
+ * This is used for navigation components that require the full hierarchy.
  */
 export const getTopicsTree = async () => {
-  "use cache";
-  cacheLife("max");
-  cacheTag("topics-tree");
+  // "use cache";
+  // // هذا التخزين يستخدم للشجرة الكاملة (Sidebar)
+  // cacheLife("max");
+  // cacheTag("topics-tree");
+  // console.log("topics-tree");
+
   try {
+    // 1. جلب جميع المواضيع في قائمة مسطحة
     const all = await db.select().from(topics).orderBy(asc(topics.order));
 
+    // 2. بناء الهيكل الشجري (Tree Structure) في الذاكرة
     const map = new Map<number, TopicWithChildren>();
 
     all.forEach((t) => {
@@ -33,7 +40,7 @@ export const getTopicsTree = async () => {
       } else {
         const parent = map.get(t.parentId);
         if (parent) parent.children.push(node);
-        else roots.push(node); // fallback
+        else roots.push(node); // fallback for orphaned nodes
       }
     });
 
@@ -43,6 +50,11 @@ export const getTopicsTree = async () => {
   }
 };
 
+/**
+ * READ: Get topics list only for a specific parent ID (or Root Topics if parentId is null).
+ * This function is optimized for lists where only direct children are needed.
+ * It queries the DB directly and uses an independent, dynamic cache tag.
+ */
 export const getTopicsByParent = async (
   parentId: number | null
 ): Promise<{
@@ -50,22 +62,36 @@ export const getTopicsByParent = async (
   message?: string;
   topics?: TopicWithChildren[];
 }> => {
-  const tree = await getTopicsTree();
-  if (!tree) return { success: false, message: "Failed to get topics" };
+  "use cache";
+  // استخدام Tag ديناميكي: 'root' للمواضيع التي لا يوجد لها أب، أو رقم الأب
+  cacheTag(`topics-list`);
+  cacheLife("max");
+  console.log("topics-list");
+  try {
+    // 💡 بناء شرط الـ WHERE لتجنب خطأ مقارنة NULL:
+    // إذا كان parentId يساوي null، نستخدم isNull(column) --> WHERE parent_id IS NULL
+    // وإلا، نستخدم eq(column, value) --> WHERE parent_id = N
+    const condition =
+      parentId === null
+        ? isNull(topics.parentId)
+        : eq(topics.parentId, parentId);
 
-  const result: TopicWithChildren[] = [];
+    // استعلام قاعدة البيانات مباشرة لضمان استقلال الـ Cache
+    const directChildren = await db
+      .select()
+      .from(topics)
+      .where(condition)
+      .orderBy(asc(topics.order));
 
-  const searchChildren = (nodes: TopicWithChildren[]) => {
-    for (const node of nodes) {
-      if (node.parentId === parentId) {
-        result.push(node);
-      }
-      if (node.children.length > 0) {
-        searchChildren(node.children);
-      }
-    }
-  };
+    // تحويل النتائج إلى النوع المطلوب
+    const result: TopicWithChildren[] = directChildren.map((t) => ({
+      ...t,
+      children: [], // القائمة الناتجة لا تحتاج إلى الأحفاد في هذا الاستخدام
+    }));
 
-  searchChildren(tree);
-  return { success: true, topics: result };
+    return { success: true, topics: result };
+  } catch (e) {
+    console.error("Error fetching topics by parent:", e);
+    return { success: false, message: "Failed to get topics from database." };
+  }
 };
