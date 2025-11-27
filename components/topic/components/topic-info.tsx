@@ -1,5 +1,5 @@
 import { Topic } from "@/db/schema";
-import MarkdownRenderer from "./topic-content";
+import MarkdownRenderer from "../../markdown";
 
 export default async function TopicInfo({
   topic,
@@ -16,7 +16,7 @@ export default async function TopicInfo({
 
   return (
     <section className="px-4 py-6">
-      <div className="max-w-3xl space-y-6">
+      <div className="space-y-6">
         {/* Title */}
         <h1 className="text-4xl font-bold tracking-tight">{topic.title}</h1>
 

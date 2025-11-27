@@ -17,7 +17,7 @@ export default async function TopicPage({ params }: PageContentProps) {
     return (
       <PageWrapper>
         <main className="flex w-full justify-center">
-          <div className="w-full max-w-5xl px-6 py-10 space-y-12">
+          <div className="w-full max-w-4xl px-6 py-10 space-y-12">
             Topic not found
           </div>
         </main>
@@ -26,7 +26,7 @@ export default async function TopicPage({ params }: PageContentProps) {
   return (
     <PageWrapper selectedTopicId={topicId}>
       <main className="flex w-full sm:justify-center">
-        <div className="w-full max-w-5xl px-6 py-10 space-y-12">
+        <div className="w-full max-w-4xl px-6 py-10 space-y-12">
           {/* Topic Content */}
           <div className="border-b pb-10">
             <TopicInfo

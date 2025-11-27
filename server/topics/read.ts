@@ -17,9 +17,21 @@ export const getFullTopic = async (id: number) => {
     // parallel fetch all related content
     const [examplesList, problemsList, resourcesList, childrenList] =
       await Promise.all([
-        db.select().from(examples).where(eq(examples.topicId, id)),
-        db.select().from(problems).where(eq(problems.topicId, id)),
-        db.select().from(resources).where(eq(resources.topicId, id)),
+        db
+          .select()
+          .from(examples)
+          .where(eq(examples.topicId, id))
+          .orderBy(asc(examples.createdAt)),
+        db
+          .select()
+          .from(problems)
+          .where(eq(problems.topicId, id))
+          .orderBy(asc(problems.createdAt)),
+        db
+          .select()
+          .from(resources)
+          .where(eq(resources.topicId, id))
+          .orderBy(asc(resources.createdAt)),
         db
           .select()
           .from(topics)

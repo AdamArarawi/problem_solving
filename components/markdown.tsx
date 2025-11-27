@@ -1,7 +1,9 @@
 import React from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypeRaw from "rehype-raw";
+import rehypeKatex from "rehype-katex";
 import { CodeBlock } from "@/components/code/code-block";
 import {
   Table,
@@ -14,10 +16,10 @@ import {
 
 export default function TopicContent({ children }: { children: string }) {
   return (
-    <div className="overflow-auto  max-w-full">
+    <div className="max-w-full">
       <Markdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw]}
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex, rehypeRaw]}
         components={{
           // Headings H1-H6
           h1: ({ children, ...props }) => (
@@ -77,7 +79,7 @@ export default function TopicContent({ children }: { children: string }) {
             </ol>
           ),
           li: ({ children, ...props }) => (
-            <li className="" {...props}>
+            <li className="mt-2" {...props}>
               {children}
             </li>
           ),
@@ -100,7 +102,7 @@ export default function TopicContent({ children }: { children: string }) {
               </div>
             ) : (
               <code
-                className="bg-secondary p-1 rounded-sm font-mono"
+                className="bg-secondary px-[5px] py-[2px] mt-2 rounded-sm font-mono"
                 {...props}
               >
                 {codeChildren}

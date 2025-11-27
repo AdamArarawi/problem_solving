@@ -5,9 +5,11 @@ import { CopyCodeButton } from "./copy-code-button";
 export async function CodeBlock({
   code,
   lang = "py",
+  className,
 }: {
   code: string;
   lang?: string;
+  className?: string;
 }) {
   // server-side: generate highlighted HTML
   const html = await highlightCode(code, lang);
@@ -27,7 +29,7 @@ export async function CodeBlock({
       </div>
       {/* الكود نفسه */}
       <div
-        className="overflow-x-auto px-4 font-mono text-sm "
+        className={`overflow-x-auto px-4 font-mono text-sm ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
