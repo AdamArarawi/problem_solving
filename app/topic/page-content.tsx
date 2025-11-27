@@ -1,0 +1,7 @@
+import TopicsList from "@/components/topic/components/topices-list";
+import { getTopicsByParent } from "@/server/topics/tree";
+
+export default async function PageContent() {
+  const topics = await getTopicsByParent(null);
+  return <TopicsList success={topics.success} topics={topics.topics} />;
+}
